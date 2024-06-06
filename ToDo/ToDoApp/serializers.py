@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import Task, Category
 
@@ -77,6 +76,5 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
 
 
 # personalizar aca la parte de la contraseña y todo eso
-# agregar foto de perfil, cambiar contraseña, olvide la contraseña, validar correo
 # validar que la hora no este ocupado, que no haya cruce de tarea
 # listado de tareas pendientes, y tareas hechas
