@@ -5,6 +5,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 import random
 import string
 
+
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -12,13 +13,17 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["username"] = user.username
         return token
 
+
 class PasswordResetSerializer(serializers.Serializer):
     new_password = serializers.CharField()
 
     def set_new_password(self):
-        new_password = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
-        self.validated_data['new_password'] = new_password
+        new_password = "".join(
+            random.choices(string.ascii_letters + string.digits, k=8)
+        )
+        self.validated_data["new_password"] = new_password
         return new_password
+
 
 class ProfileCreationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -47,3 +52,15 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ["id", "username", "email", "bio", "profile_picture"]
         read_only_fields = ["id"]
+
+    username = serializers.CharField(read_only=True)
+
+    def update(self, instance, validated_data):
+        # Actualiza los campos solo si se proporciona un nuevo valor que no esté vacío
+        for attr, value in validated_data.items():
+            if value is not None and value != "":
+                setattr(instance, attr, value)
+
+        # Guarda el objeto actualizado
+        instance.save()
+        return instance
