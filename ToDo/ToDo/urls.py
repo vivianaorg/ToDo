@@ -6,6 +6,8 @@ from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 from profiles import views as views_profile
 from profiles.views import PasswordResetView
+from django.conf import settings
+from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
 router.register(r"categorys", views.CategoryViewSet)
@@ -39,3 +41,6 @@ urlpatterns = [
     ),
     path("password-reset/", PasswordResetView.as_view(), name="password-reset"),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
