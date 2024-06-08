@@ -8,7 +8,6 @@ from profiles import views as views_profile
 from profiles.views import PasswordResetView
 
 router = routers.DefaultRouter()
-# router.register(r"users", views.UserViewSet)
 router.register(r"categorys", views.CategoryViewSet)
 router.register(r"task", views.TaskViewSet)
 

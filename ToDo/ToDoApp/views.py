@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from .models import Task, Category
 from django.http import JsonResponse
 from rest_framework import permissions, viewsets
@@ -21,11 +20,6 @@ def listaJson(request):
     tareas = Task.objects.order_by("-priority").values()
     lista_tareas = list(tareas)
     return JsonResponse(lista_tareas, safe=False)
-
-
-def task_list(request):
-    tasks = Task.objects.all()
-    return render(request, "ToDoApp/task_list.html", {"tasks": tasks})
 
 
 """
