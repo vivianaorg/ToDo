@@ -10,7 +10,7 @@ class Category(models.Model):
         settings.AUTH_USER_MODEL,
         on_delete=models.RESTRICT,
         limit_choices_to={"is_superuser": False},
-        related_name="categorys",
+        related_name="categories",
         null=True,
     )
 
@@ -39,8 +39,8 @@ class Task(models.Model):
     )
     name = models.CharField(max_length=255)
     description = models.TextField()
-    fecha_inicio = models.DateField()
-    fecha_final = models.DateField()
+    fecha_inicio = models.DateTimeField()
+    fecha_final = models.DateTimeField()
     completed = models.BooleanField(default=False)
     priority = models.IntegerField(default=1)
 
