@@ -9,6 +9,7 @@ from .serializers import (
     ProfileSerializer,
     CustomTokenObtainPairSerializer,
     PasswordResetSerializer,
+    ForgotPasswordSerializerCustom,
 )
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.views import APIView
@@ -72,6 +73,19 @@ class ProfileUpdateView(generics.UpdateAPIView):
             instance._prefetched_objects_cache = {}
 
         return Response(serializer.data)
+
+
+class ForgotPasswordCustomView(generics.UpdateAPIView):
+    queryset = get_user_model().objects.all()
+    serializer_class = ForgotPasswordSerializerCustom
+    permission_classes = [AllowAny]
+
+    def update(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        response_data = serializer.save()
+
+        return Response(response_data, status=status.HTTP_200_OK)
 
 
 class ProfileDetailView(generics.ListAPIView):

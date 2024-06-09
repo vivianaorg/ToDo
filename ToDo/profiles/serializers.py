@@ -47,6 +47,33 @@ class ProfileCreationSerializer(serializers.ModelSerializer):
             return {"success": False, "message": "Error al registrar usuario"}
 
 
+class ForgotPasswordSerializerCustom(serializers.Serializer):
+    username = serializers.CharField()
+    new_password = serializers.CharField(write_only=True, min_length=8)
+
+    def validate_username(self, value):
+        User = Profile
+        if not User.objects.filter(username=value).exists():
+            raise serializers.ValidationError("El usuario no existe")
+        return value
+
+    def save(self):
+        username = self.validated_data["username"]
+        new_password = self.validated_data["new_password"]
+
+        User = Profile
+        user = User.objects.get(username=username)
+
+        encrypted_password = make_password(new_password)
+        user.password = encrypted_password
+        user.save()
+
+        return {
+            "success": True,
+            "message": "La contraseña ha sido actualizada exitosamente.",
+        }
+
+
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile

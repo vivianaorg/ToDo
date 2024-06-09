@@ -39,6 +39,10 @@ urlpatterns = [
         views_profile.ProfileUpdateView.as_view(),
         name="profile-update",
     ),
+    path(
+        "users-forgot-password-custom/",
+        views_profile.ForgotPasswordCustomView.as_view(),
+    ),
     path("password-reset/", PasswordResetView.as_view(), name="password-reset"),
 ]
 
