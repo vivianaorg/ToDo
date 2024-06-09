@@ -48,4 +48,4 @@ class Task(models.Model):
         return self.name
 
     def fechas_vencidas(self):
-        return self.fecha_final > timezone.now().date()
+        return self.fecha_final < timezone.now().date()
