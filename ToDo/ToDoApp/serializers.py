@@ -107,3 +107,44 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
             )
 
         return value
+    
+class CompletedTaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = (
+            "id",
+            "category",
+            "name",
+            "description",
+            "fecha_inicio",
+            "fecha_final",
+            "completed",
+            "priority",
+        )
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        if instance.completed:
+            return representation
+        return None  # Omitir tareas no completadas
+
+class PendingTaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = (
+            "id",
+            "category",
+            "name",
+            "description",
+            "fecha_inicio",
+            "fecha_final",
+            "completed",
+            "priority",
+        )
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        if not instance.completed:
+            return representation
+        return None  # Omitir tareas completadas
+
