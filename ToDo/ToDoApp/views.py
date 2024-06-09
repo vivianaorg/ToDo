@@ -1,14 +1,17 @@
+from argparse import Action
 from .models import Task, Category
 from django.http import JsonResponse
 from rest_framework import permissions, viewsets
 from rest_framework.filters import OrderingFilter
-from .serializers import TaskSerializer, CategorySerializer
+from .serializers import CompletedTaskSerializer, PendingTaskSerializer, TaskSerializer, CategorySerializer
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.response import Response
+from rest_framework.decorators import action
+
 
 
 def tareaJson(request):
@@ -54,7 +57,18 @@ class TaskViewSet(viewsets.ModelViewSet):
         context = super().get_serializer_context()
         context["user"] = self.request.user
         return context
+    
+    @action(detail=False, methods=["get"])
+    def completed(self, request):
+        completed_tasks = self.get_queryset().filter(completed=True)
+        serializer = CompletedTaskSerializer(completed_tasks, many=True, context={"request": request})
+        return Response(serializer.data)
 
+    @action(detail=False, methods=["get"])
+    def pending(self, request):
+        pending_tasks = self.get_queryset().filter(completed=False)
+        serializer = PendingTaskSerializer(pending_tasks, many=True, context={"request": request})
+        return Response(serializer.data)
 
 class CustomAuthToken(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
