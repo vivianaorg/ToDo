@@ -25,4 +25,4 @@ jobs:
         pip install -r requirements/ci.txt
     - name: Run Tests
       run: |
-        python manage.py test --settings=ToDo.ToDo.settings
+        python ..manage.py test --settings=ToDo.ToDo.settings
