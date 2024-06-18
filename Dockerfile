@@ -18,4 +18,4 @@ RUN pip install --no-cache-dir -r requirements/base.txt
 EXPOSE 8000
 
 # Exponer el puerto y definir el comando de inicio
-CMD ["sh", "-c", "python manage.py runserver 0.0.0.0:$PORT"]
+CMD ["sh", "-c", "python ToDo/manage.py runserver 0.0.0.0:$PORT"]
