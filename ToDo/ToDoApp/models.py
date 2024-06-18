@@ -18,6 +18,7 @@ class Category(models.Model):
         return self.category_name
 
 
+# ...
 class Task(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="tasks"
